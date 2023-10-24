@@ -16,21 +16,21 @@ echo "Unpacking Tesseract-OCR binaries"
 mkdir -p $INSTALL_DIR
 tar -zxvf $TESSERACT_OCR_TGZ -C $INSTALL_DIR
 
-echo 'Getting Tesseract-OCR training data'
-mkdir -p $INSTALL_DIR_TRAINING_DATA
-if [ $TESSERACT_OCR_LANGUAGES ]
-then
-   array=(${TESSERACT_OCR_LANGUAGES//,/ })
-   for i in "${!array[@]}"
-   do
-     lang="${array[i]}"
-     echo $lang 'training data'
-     curl https://raw.githubusercontent.com/tesseract-ocr/tessdata/$TESSERACT_OCR_DATA_VERSION/$lang.traineddata > $INSTALL_DIR_TRAINING_DATA/$lang.traineddata
-   done
-fi
+#echo 'Getting Tesseract-OCR training data'
+#mkdir -p $INSTALL_DIR_TRAINING_DATA
+#if [ $TESSERACT_OCR_LANGUAGES ]
+#then
+#   array=(${TESSERACT_OCR_LANGUAGES//,/ })
+#   for i in "${!array[@]}"
+#   do
+#     lang="${array[i]}"
+#     echo $lang 'training data'
+#     curl https://raw.githubusercontent.com/tesseract-ocr/tessdata/$TESSERACT_OCR_DATA_VERSION/$lang.traineddata > $INSTALL_DIR_TRAINING_DATA/$lang.traineddata
+#   done
+#fi
 
 echo "Building runtime environment for Tesseract-OCR"
 mkdir -p $BUILD_DIR/.profile.d
 echo "export PATH=\"$TESSERACT_OCR_DIR/bin:\$PATH\"" > $ENVSCRIPT
 echo "export LD_LIBRARY_PATH=\"$TESSERACT_OCR_DIR/lib:\$LD_LIBRARY_PATH\"" >> $ENVSCRIPT
-echo "export TESSDATA_PREFIX=\"$TRAINING_DATA_DIR/\"" >> $ENVSCRIPT
+echo "export TESSDATA_PREFIX=\"$TRAINING_DATA_DIR/share/tessdata\"" >> $ENVSCRIPT
